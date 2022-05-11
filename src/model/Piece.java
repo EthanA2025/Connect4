@@ -5,4 +5,12 @@ package model;
  */
 public class Piece {
     
+    private final Type type;
+    private final int position;
+
+    public Piece(Type type, int position) {
+        this.type = type;
+        this.position = position;
+    }
+    
 }
