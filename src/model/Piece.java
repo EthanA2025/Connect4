@@ -16,4 +16,8 @@ public class Piece {
         return this.type;
     }
 
+    public String toString() {
+        return "[" + this.type.toString() + "]";
+    }
+
 }

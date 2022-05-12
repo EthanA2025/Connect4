@@ -46,10 +46,10 @@ public class Board {
         StringBuilder sb = new StringBuilder();
         for (int i=0; i<ROWS; i++) {
             for (int j=0; j<COLS; j++) {
-                if (boardArray[ROWS][COLS] == null) {
-                    sb.append("[ ]");
+                if (boardArray[i][j] == null) {
+                    sb.append("[  ]");
                 } else {
-                    sb.append(boardArray[ROWS][COLS].toString());
+                    sb.append(boardArray[i][j].toString());
                 }
             }
             sb.append("\n");
@@ -60,6 +60,11 @@ public class Board {
     public static void main(String[] args) {
         Board board = new Board();
         System.out.println(board.toString());
+        board.placePiece(new Piece(Type.RED), 0);
+        System.out.println(board.toString());
+        board.placePiece(new Piece(Type.RED), 0);
+        System.out.println(board.toString());
+
     }
 
 }
