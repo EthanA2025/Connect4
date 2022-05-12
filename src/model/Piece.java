@@ -1,7 +1,5 @@
 package model;
 
-import javafx.geometry.Pos;
-
 /**
  * A class that represents a piece on the connect 4 board
  * It has a type enumeration as well as a position associated with it
@@ -9,15 +7,13 @@ import javafx.geometry.Pos;
 public class Piece {
     
     private final Type type;
-    private final Position position;
 
-    public Piece(Type type, Position position) {
+    public Piece(Type type) {
         this.type = type;
-        this.position = position;
     }
 
-    public Position getPosition() {
-        return this.position;
+    public Type getType() {
+        return this.type;
     }
 
 }
