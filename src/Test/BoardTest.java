@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.platform.commons.annotation.Testable;
 
 import model.Board;
+import model.Gamestate;
 import model.Piece;
 import model.Type;
 
@@ -14,14 +15,14 @@ public class BoardTest {
     @Test
     public void addPiece() {
         // setup
-        Board board = new Board();
+        Board board = new Board(Gamestate.IN_PROGRESS);
         
         // invoke
         board.placePiece(new Piece(Type.RED), 0);
 
         // analyze
-        String expected = "";
-        String actual = board.toString();
+        String expected = "[RED]";
+        String actual = board.getBoardArray()[0][0].toString();
 
         assertEquals(expected, actual);
     }
