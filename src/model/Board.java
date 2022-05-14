@@ -35,6 +35,16 @@ public class Board {
         return this.state;
     }
 
+    public void gameWon() {
+        this.state = Gamestate.WON;
+        System.out.println(this.toString());
+        if ((turnsPlayed-1)%2 == 0) {
+            System.out.println("Red wins!"); // since turns are incremented before this, subtract 1 from turnsPlayed to get correct winner
+        } else {
+            System.out.println("Yellow wins!");
+        }
+    }
+
     /**
      * Increments the turn number of the game
      */
@@ -50,6 +60,7 @@ public class Board {
      */
     public void checkConnections() {
         int connections = 1; // see if there are 3 more connections associated with this particular piece
+
         // check horizontal
         for (int row=0; row<=ROWS-1; row++) {
             for (int col=0; col<COLS-1; col++) {
@@ -60,23 +71,34 @@ public class Board {
                     if (currentType.equals(nextType)) {
                         connections++; // increment connections if the next is equal to the current
                         if (connections == 4) {
-                            this.state = Gamestate.WON;
-                            System.out.println(this.toString());
-                            if ( (turnsPlayed-1) %2 == 0) {
-                                System.out.println("Red wins!"); // since turns are incremented before this, subtract 1 from turnsPlayed to get correct winner
-                                return;
-                            } else {
-                                System.out.println("Yellow wins!");
-                                return;
-                            }
+                            gameWon();
                         }
                     } else {
-                        connections = 0; // reset if the other type is found
+                        connections = 1;
                     }
                 }
             }
         }
 
+        // check vertical
+        connections = 1;
+        for (int col=0; col<=COLS-1; col++) {
+            for (int row=0; row<ROWS-1; row++) {
+                if (boardArray[row][col] != null && boardArray[row+1][col] != null) {
+                    Type currentType = boardArray[row][col].getType();
+                    Type nextType = boardArray[row+1][col].getType();
+
+                    if (currentType.equals(nextType)) {
+                        connections++; // increment connections if the next is equal to the current
+                        if (connections == 4) {
+                           gameWon();
+                        } 
+                    } else {
+                        connections = 1;
+                    }
+                }
+            }
+        }
     }
 
     /**

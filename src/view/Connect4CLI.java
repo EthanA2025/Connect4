@@ -4,7 +4,6 @@ import java.util.Scanner;
 
 import model.Board;
 import model.Gamestate;
-import model.Piece;
 
 public class Connect4CLI {
     private final static Board board = new Board(Gamestate.IN_PROGRESS);
