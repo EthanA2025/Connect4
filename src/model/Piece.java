@@ -6,7 +6,7 @@ package model;
  */
 public class Piece {
     
-    private final Type type;
+    private Type type;
 
     public Piece(Type type) {
         this.type = type;
@@ -14,6 +14,10 @@ public class Piece {
 
     public Type getType() {
         return this.type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
     }
 
     public String toString() {

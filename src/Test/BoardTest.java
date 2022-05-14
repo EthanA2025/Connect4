@@ -18,11 +18,11 @@ public class BoardTest {
         Board board = new Board(Gamestate.IN_PROGRESS);
         
         // invoke
-        board.placePiece(new Piece(Type.RED), 0);
+        board.placePiece(0);
 
         // analyze
         String expected = "[RED]";
-        String actual = board.getBoardArray()[0][0].toString();
+        String actual = board.getBoardArray()[5][0].toString();
 
         assertEquals(expected, actual);
     }
