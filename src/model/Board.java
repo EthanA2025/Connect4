@@ -1,5 +1,8 @@
 package model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * A class to represent a connect 4 board (6x7)
  */
@@ -11,7 +14,7 @@ public class Board {
     private Gamestate state;
     
     public Board(Gamestate state) {
-        this.boardArray = new Piece[6][7];
+        this.boardArray = new Piece[ROWS][COLS];
         this.state = state;
         this.turnsPlayed = 0;
     }
@@ -47,21 +50,17 @@ public class Board {
      */
     public void checkConnections() {
         int connections = 0;
-        int rowPossible[] = {-1, -1, 0, 1, 1, 1, 0, -1};
-        int colPossible[] = {0, 1, 1, 1, 0, -1, -1, -1};
+        // check horizontal
+        for (int row=0; row<=ROWS-1; row++) {
+            for (int col=0; col<COLS-1; col++) {
+                if (boardArray[row][col] != null && boardArray[row][col+1] != null) {
+                    Type currentType = boardArray[row][col].getType();
+                    Type nextType = boardArray[row][col+1].getType();
 
-        for (int row=0; row<ROWS; row++) {
-            for (int col=0; col<COLS; col++) { // check if piece exists first
-                if (boardArray[row][col] != null) {
-                    // now check for surrounding pieces for all combinations, if the type is the same it contributes to a connection
-                    for (int i=0; i<rowPossible.length; i++) {
-                        int surroundingCol = col + colPossible[i];
-                        int surroundingRow = row + rowPossible[i];
-                        
-                        // check to see if the surrounding piece is the same type
-                        if (boardArray[surroundingRow][surroundingCol].getType() == boardArray[row][col].getType()) {
-                            connections++;
-                        }
+                    if (currentType.equals(nextType)) {
+                        connections++; // increment connections if the next is equal to the current
+                    } else {
+                        connections = 0; // reset if the other type is found
                     }
                 }
             }
@@ -69,12 +68,14 @@ public class Board {
         if (connections == 4) {
             this.state = Gamestate.WON;
             System.out.println(this.toString());
-            if (turnsPlayed%2 == 0) {
-                System.out.println("RED wins!");
+            if ( (turnsPlayed-1) %2 == 0) {
+                System.out.println("Red wins!"); // since turns are incremented before this, subtract 1 from turnsPlayed to get correct winner
             } else {
                 System.out.println("Yellow wins!");
             }
         }
+
+        
     }
 
     /**
@@ -87,20 +88,20 @@ public class Board {
         // first check if the position is valid that the piece is being added too, then add it to the 2D array and set
         boolean valid = false;
         int row = 0;
-        Piece piece = new Piece(Type.RED);
 
         if (column >= COLS) {
             System.out.println("Invalid column!");
             return;
         }
-        if (turnsPlayed%2 == 1) {
-            piece.setType(Type.YELLOW);
-        }
 
         for (int i=1; i<=ROWS; i++) {
             if (boardArray[ROWS-i][column] == null) {
+                Piece piece = new Piece(Type.RED);
+                if (turnsPlayed%2 == 1) {
+                    piece.setType(Type.YEL);
+                }
                 boardArray[ROWS-i][column] = piece;
-                row = i;
+                row = i-1;
                 valid = true; // inserts into the 2D array
                 break;
             }
@@ -110,7 +111,7 @@ public class Board {
         } else {
             System.out.println("Piece placed at row: " + row + " column: " + column);
         } // if all of them are not null then the column is full
-        checkConnections();
+        turnPlayed();
         // check connections to see if the game is won
     }
 
@@ -129,12 +130,12 @@ public class Board {
         return sb.toString();
     }
 
-    public static void main(String[] args) {
-        Board board = new Board(Gamestate.IN_PROGRESS);
-        System.out.println(board.toString());
-        for (int i=0; i<8; i++) {
-            board.placePiece(i);
-            System.out.println(board.toString());
-        }
-    }
+    // public static void main(String[] args) {
+    //     Board board = new Board(Gamestate.IN_PROGRESS);
+    //     System.out.println(board.toString());
+    //     for (int i=0; i<8; i++) {
+    //         board.placePiece(i);
+    //         System.out.println(board.toString());
+    //     }
+    // }
 }
