@@ -49,7 +49,7 @@ public class Board {
      * @return - whether the game is won or not
      */
     public void checkConnections() {
-        int connections = 0;
+        int connections = 1; // see if there are 3 more connections associated with this particular piece
         // check horizontal
         for (int row=0; row<=ROWS-1; row++) {
             for (int col=0; col<COLS-1; col++) {
@@ -59,23 +59,24 @@ public class Board {
 
                     if (currentType.equals(nextType)) {
                         connections++; // increment connections if the next is equal to the current
+                        if (connections == 4) {
+                            this.state = Gamestate.WON;
+                            System.out.println(this.toString());
+                            if ( (turnsPlayed-1) %2 == 0) {
+                                System.out.println("Red wins!"); // since turns are incremented before this, subtract 1 from turnsPlayed to get correct winner
+                                return;
+                            } else {
+                                System.out.println("Yellow wins!");
+                                return;
+                            }
+                        }
                     } else {
                         connections = 0; // reset if the other type is found
                     }
                 }
             }
         }
-        if (connections == 4) {
-            this.state = Gamestate.WON;
-            System.out.println(this.toString());
-            if ( (turnsPlayed-1) %2 == 0) {
-                System.out.println("Red wins!"); // since turns are incremented before this, subtract 1 from turnsPlayed to get correct winner
-            } else {
-                System.out.println("Yellow wins!");
-            }
-        }
 
-        
     }
 
     /**
