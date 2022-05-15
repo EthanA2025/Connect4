@@ -1,6 +1,6 @@
 package model;
 
 public enum Type {
-    RED,
-    YEL;
+    RD,
+    YW;
 }

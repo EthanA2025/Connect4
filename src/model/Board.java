@@ -80,6 +80,7 @@ public class Board {
 
         // check vertical
         int vertical = 1;
+
         for (int col=0; col<=COLS-1; col++) {
             vertical = 1; // reset the vertical counter for each new column checked
             for (int row=0; row<ROWS-1; row++) {
@@ -97,47 +98,52 @@ public class Board {
                     }
                 }
             }
-        }
+        }  
 
-        // check ascending vertical
-        for(int rowStart = 0; rowStart < ROWS - 4; rowStart++){
-            int count = 0;
-            int row, col;
-            for( row = rowStart, col = 0; row < ROWS && col < COLS; row++, col++ ) {
-                if(boardArray[row][col] != null && boardArray[row-1][col+1] != null && boardArray[row][col].getType().equals(boardArray[row-1][col+1].getType())){
-                    count++;
-                    if(count >= 4) {
-                        gameWon();
+        // check ascending diagonal
+        int aDiagonal = 1;
+
+        for (int col=0; col<=COLS-1; col++) {
+            aDiagonal = 1;
+            for (int row=0; row<=ROWS-1; row++) {
+                if (row - 1 > 0 && col + 1 < COLS && boardArray[row][col] != null && boardArray[row-1][col+1] != null) {
+                    Type currentType = boardArray[row][col].getType();
+                    try {
+                        Type Type2 = boardArray[row-1][col+1].getType();
+                        Type Type3 = boardArray[row-2][col+2].getType();
+                        Type Type4 = boardArray[row-3][col+3].getType();
+
+                        if (currentType.equals(Type2) && currentType.equals(Type3) && currentType.equals(Type4)) {
+                            gameWon();
+                        }
+                    } catch (Exception e) {
+                        // 
                     }
                 }
-                else {
-                    count = 0;
+            }
+        }
+        // check ascending diagonal
+        int dDiagonal = 1;
+
+        for (int col=0; col<=COLS-1; col++) {
+            dDiagonal = 1;
+            for (int row=0; row<=ROWS-1; row++) {
+                if (row - 1 > 0 && col - 1 > 0 && boardArray[row][col] != null && boardArray[row-1][col-1] != null) {
+                    Type currentType = boardArray[row][col].getType();
+                    try {
+                        Type Type2 = boardArray[row-1][col-1].getType();
+                        Type Type3 = boardArray[row-2][col-2].getType();
+                        Type Type4 = boardArray[row-3][col-3].getType();
+
+                        if (currentType.equals(Type2) && currentType.equals(Type3) && currentType.equals(Type4)) {
+                            gameWon();
+                        }
+                    } catch (Exception e) {
+                        // 
+                    }
                 }
             }
-        }      
-
-        // check descending diagonal
-
-        // int dDiagonal = 1;
-
-        // for (int row=0; row<=ROWS-1; row++) {
-        //     dDiagonal = 1;
-        //     for (int col=0; col<COLS-1; col++) {
-        //         if (row -1 > 0 && col - 1 > 0 && boardArray[row][col] != null && boardArray[row-1][col-1] != null) {
-        //             Type currentType = boardArray[row][col].getType();
-        //             Type nextType = boardArray[row-1][col-1].getType();
-
-        //             if (currentType.equals(nextType)) {
-        //                 dDiagonal++; // increment connections if the next is equal to the current
-        //                 if (dDiagonal == 4) {
-        //                     gameWon();
-        //                 }
-        //             } else {
-        //                 dDiagonal = 1;
-        //             }
-        //         }
-        //     }
-        // }
+        }
     }
 
     /**
@@ -158,9 +164,9 @@ public class Board {
 
         for (int i=1; i<=ROWS; i++) {
             if (boardArray[ROWS-i][column] == null) {
-                Piece piece = new Piece(Type.RED);
+                Piece piece = new Piece(Type.RD);
                 if (turnsPlayed%2 == 1) {
-                    piece.setType(Type.YEL);
+                    piece.setType(Type.YW);
                 }
                 boardArray[ROWS-i][column] = piece;
                 row = i-1;
@@ -191,13 +197,4 @@ public class Board {
         }
         return sb.toString();
     }
-
-    // public static void main(String[] args) {
-    //     Board board = new Board(Gamestate.IN_PROGRESS);
-    //     System.out.println(board.toString());
-    //     for (int i=0; i<8; i++) {
-    //         board.placePiece(i);
-    //         System.out.println(board.toString());
-    //     }
-    // }
 }
