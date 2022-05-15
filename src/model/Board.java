@@ -59,42 +59,44 @@ public class Board {
      * @return - whether the game is won or not
      */
     public void checkConnections() {
-        int connections = 1; // see if there are 3 more connections associated with this particular piece
+        int horizontal = 1; // see if there are 3 more connections associated with this particular piece
 
         // check horizontal
         for (int row=0; row<=ROWS-1; row++) {
+            horizontal = 1;
             for (int col=0; col<COLS-1; col++) {
                 if (boardArray[row][col] != null && boardArray[row][col+1] != null) {
                     Type currentType = boardArray[row][col].getType();
                     Type nextType = boardArray[row][col+1].getType();
 
                     if (currentType.equals(nextType)) {
-                        connections++; // increment connections if the next is equal to the current
-                        if (connections == 4) {
+                        horizontal++; // increment connections if the next is equal to the current
+                        if (horizontal == 4) {
                             gameWon();
                         }
                     } else {
-                        connections = 1;
+                        horizontal = 1;
                     }
                 }
             }
         }
 
         // check vertical
-        connections = 1;
+        int vertical = 1;
         for (int col=0; col<=COLS-1; col++) {
+            vertical = 1; // reset the vertical counter for each new column checked
             for (int row=0; row<ROWS-1; row++) {
                 if (boardArray[row][col] != null && boardArray[row+1][col] != null) {
                     Type currentType = boardArray[row][col].getType();
                     Type nextType = boardArray[row+1][col].getType();
 
                     if (currentType.equals(nextType)) {
-                        connections++; // increment connections if the next is equal to the current
-                        if (connections == 4) {
+                        vertical++; // increment connections if the next is equal to the current
+                        if (vertical == 4) {
                            gameWon();
                         } 
                     } else {
-                        connections = 1;
+                        vertical = 1;
                     }
                 }
             }
