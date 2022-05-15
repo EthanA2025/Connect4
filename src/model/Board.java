@@ -71,7 +71,7 @@ public class Board {
 
                     if (currentType.equals(nextType)) {
                         horizontal++; // increment connections if the next is equal to the current
-                        if (horizontal == 4) {
+                        if (horizontal >= 4) {
                             gameWon();
                         }
                     } else {
@@ -92,7 +92,7 @@ public class Board {
 
                     if (currentType.equals(nextType)) {
                         vertical++; // increment connections if the next is equal to the current
-                        if (vertical == 4) {
+                        if (vertical >= 4) {
                            gameWon();
                         } 
                     } else {
@@ -101,6 +101,46 @@ public class Board {
                 }
             }
         }
+
+        // check ascending vertical
+        for(int rowStart = 0; rowStart < ROWS - 4; rowStart++){
+            int count = 0;
+            int row, col;
+            for( row = rowStart, col = 0; row < ROWS && col < COLS; row++, col++ ) {
+                if(boardArray[row][col] != null && boardArray[row-1][col+1] != null && boardArray[row][col].getType().equals(boardArray[row-1][col+1].getType())){
+                    count++;
+                    if(count >= 4) {
+                        gameWon();
+                    }
+                }
+                else {
+                    count = 0;
+                }
+            }
+        }      
+
+        // check descending diagonal
+
+        // int dDiagonal = 1;
+
+        // for (int row=0; row<=ROWS-1; row++) {
+        //     dDiagonal = 1;
+        //     for (int col=0; col<COLS-1; col++) {
+        //         if (row -1 > 0 && col - 1 > 0 && boardArray[row][col] != null && boardArray[row-1][col-1] != null) {
+        //             Type currentType = boardArray[row][col].getType();
+        //             Type nextType = boardArray[row-1][col-1].getType();
+
+        //             if (currentType.equals(nextType)) {
+        //                 dDiagonal++; // increment connections if the next is equal to the current
+        //                 if (dDiagonal == 4) {
+        //                     gameWon();
+        //                 }
+        //             } else {
+        //                 dDiagonal = 1;
+        //             }
+        //         }
+        //     }
+        // }
     }
 
     /**
