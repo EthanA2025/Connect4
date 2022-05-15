@@ -1,8 +1,5 @@
 package model;
 
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * A class to represent a connect 4 board (6x7)
  */
