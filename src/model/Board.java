@@ -56,57 +56,52 @@ public class Board {
      * @return - whether the game is won or not
      */
     public void checkConnections() {
-        int horizontal = 1; // see if there are 3 more connections associated with this particular piece
+        // see if there are 3 more connections associated with this particular piece
 
         // check horizontal
-        for (int row=0; row<=ROWS-1; row++) {
-            horizontal = 1;
-            for (int col=0; col<COLS-1; col++) {
-                if (boardArray[row][col] != null && boardArray[row][col+1] != null) {
+        for (int col=0; col<=COLS-1; col++) {
+            for (int row=0; row<=ROWS-1; row++) {
+                if (row - 1 > 0 && col + 1 < COLS && boardArray[row][col] != null) {
                     Type currentType = boardArray[row][col].getType();
-                    Type nextType = boardArray[row][col+1].getType();
+                    try {
+                        Type Type2 = boardArray[row][col+1].getType();
+                        Type Type3 = boardArray[row][col+2].getType();
+                        Type Type4 = boardArray[row][col+3].getType();
 
-                    if (currentType.equals(nextType)) {
-                        horizontal++; // increment connections if the next is equal to the current
-                        if (horizontal >= 4) {
+                        if (currentType.equals(Type2) && currentType.equals(Type3) && currentType.equals(Type4)) {
                             gameWon();
                         }
-                    } else {
-                        horizontal = 1;
+                    } catch (Exception e) {
+                        // ignore out of bounds exceptions
                     }
                 }
             }
         }
 
         // check vertical
-        int vertical = 1;
-
         for (int col=0; col<=COLS-1; col++) {
-            vertical = 1; // reset the vertical counter for each new column checked
-            for (int row=0; row<ROWS-1; row++) {
-                if (boardArray[row][col] != null && boardArray[row+1][col] != null) {
+            for (int row=0; row<=ROWS-1; row++) {
+                if (row - 1 > 0 && col + 1 < COLS && boardArray[row][col] != null) {
                     Type currentType = boardArray[row][col].getType();
-                    Type nextType = boardArray[row+1][col].getType();
+                    try {
+                        Type Type2 = boardArray[row+1][col].getType();
+                        Type Type3 = boardArray[row+2][col].getType();
+                        Type Type4 = boardArray[row+3][col].getType();
 
-                    if (currentType.equals(nextType)) {
-                        vertical++; // increment connections if the next is equal to the current
-                        if (vertical >= 4) {
-                           gameWon();
-                        } 
-                    } else {
-                        vertical = 1;
+                        if (currentType.equals(Type2) && currentType.equals(Type3) && currentType.equals(Type4)) {
+                            gameWon();
+                        }
+                    } catch (Exception e) {
+                        // ignore out of bounds exceptions
                     }
                 }
             }
-        }  
+        }
 
         // check ascending diagonal
-        int aDiagonal = 1;
-
         for (int col=0; col<=COLS-1; col++) {
-            aDiagonal = 1;
             for (int row=0; row<=ROWS-1; row++) {
-                if (row - 1 > 0 && col + 1 < COLS && boardArray[row][col] != null && boardArray[row-1][col+1] != null) {
+                if (row - 1 > 0 && col + 1 < COLS && boardArray[row][col] != null) {
                     Type currentType = boardArray[row][col].getType();
                     try {
                         Type Type2 = boardArray[row-1][col+1].getType();
@@ -117,18 +112,15 @@ public class Board {
                             gameWon();
                         }
                     } catch (Exception e) {
-                        // 
+                        // ignore out of bounds exceptions
                     }
                 }
             }
         }
         // check ascending diagonal
-        int dDiagonal = 1;
-
         for (int col=0; col<=COLS-1; col++) {
-            dDiagonal = 1;
             for (int row=0; row<=ROWS-1; row++) {
-                if (row - 1 > 0 && col - 1 > 0 && boardArray[row][col] != null && boardArray[row-1][col-1] != null) {
+                if (row - 1 > 0 && col - 1 > 0 && boardArray[row][col] != null) {
                     Type currentType = boardArray[row][col].getType();
                     try {
                         Type Type2 = boardArray[row-1][col-1].getType();
@@ -139,7 +131,7 @@ public class Board {
                             gameWon();
                         }
                     } catch (Exception e) {
-                        // 
+                        // ignore out of bounds exceptions
                     }
                 }
             }
