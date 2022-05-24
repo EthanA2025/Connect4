@@ -5,20 +5,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import model.Board;
 import model.Gamestate;
 
 public class Connect4GUI extends Application {
-    private final static Board board = new Board(Gamestate.IN_PROGRESS);
-    static final Image CIRCLE = new Image("file:src/view/img/circle.jpeg");
+    private Board board;
 
     public Button createPlaceButton() {
         Button button = new Button();
@@ -27,31 +21,35 @@ public class Connect4GUI extends Application {
         return button;
     }
 
-    public Button createPieceLabel() {
-        Button button = new Button();
-        button.setBackground(new Background(new BackgroundImage(CIRCLE, 
-        BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, 
-        BackgroundSize.DEFAULT)));
+    public Label createPieceButton() {
+        Label label = new Label(); 
+        label.setPrefSize(100, 100);
+        Image circle = new Image("file:src/img/circle.png");
+        ImageView view = new ImageView(circle);
+        view.setPreserveRatio(true);
+        view.setFitWidth(100);
+        view.setFitHeight(100);
+        
+        label.setGraphic(view);
 
-        return button;
+        return label;
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-        GridPane grid = new GridPane();
+        board = new Board(Gamestate.IN_PROGRESS);
+        GridPane grid = new GridPane();        
 
         for (int row=0; row<board.getRows(); row++) {
             for (int col=0; col<board.getCols(); col++) {
-                grid.add(createPieceLabel(), row, col);
+                Label piece = createPieceButton();
+                grid.add(piece, row, col);
             }
         }
 
-        // BorderPane bp = new BorderPane();
-        // bp.setCenter(grid);
-
         Scene scene = new Scene(grid);
-        stage.setTitle("Connect 4"); 
         stage.setScene(scene);     
+        stage.setTitle("Connect 4"); 
         stage.show();  
     }
 
