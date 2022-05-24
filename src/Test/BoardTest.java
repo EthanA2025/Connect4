@@ -7,8 +7,6 @@ import org.junit.platform.commons.annotation.Testable;
 
 import model.Board;
 import model.Gamestate;
-import model.Piece;
-import model.Type;
 
 @Testable
 public class BoardTest {
