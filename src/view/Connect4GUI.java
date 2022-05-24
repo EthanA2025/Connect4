@@ -27,13 +27,13 @@ public class Connect4GUI extends Application {
         return button;
     }
 
-    public Label createPieceLabel() {
-        Label label = new Label();
-        label.setBackground(new Background(new BackgroundImage(CIRCLE, 
+    public Button createPieceLabel() {
+        Button button = new Button();
+        button.setBackground(new Background(new BackgroundImage(CIRCLE, 
         BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, 
         BackgroundSize.DEFAULT)));
 
-        return label;
+        return button;
     }
 
     @Override
@@ -45,11 +45,11 @@ public class Connect4GUI extends Application {
                 grid.add(createPieceLabel(), row, col);
             }
         }
-        
-        BorderPane bp = new BorderPane();
-        bp.setCenter(grid);
 
-        Scene scene = new Scene(bp);
+        // BorderPane bp = new BorderPane();
+        // bp.setCenter(grid);
+
+        Scene scene = new Scene(grid);
         stage.setTitle("Connect 4"); 
         stage.setScene(scene);     
         stage.show();  
