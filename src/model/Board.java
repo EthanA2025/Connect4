@@ -1,7 +1,12 @@
 package model;
 
 /**
- * A class to represent a connect 4 board (6x7)
+ * A class to represent a connect 4 board (6x7).
+ * Each board has a boardArray associated with it that
+ * contains the pieces placed by the players. It also has
+ * the number of turns played and a current state to regulate
+ * the flow of the game.
+ * @author Ethan Abbate 2022
  */
 public class Board {
     private static final int ROWS = 6;
@@ -16,22 +21,43 @@ public class Board {
         this.turnsPlayed = 0;
     }
 
+    /**
+     * Sets the state of the game using the Gamestate enumeration
+     * @param state state to change to
+     */
     public void setGamestate(Gamestate state) {
         this.state = state;
     }
 
+    /**
+     * Gets the boardArray - the array of pieces that represents 
+     * the connect 4 board.
+     * @return the board array
+     */
     public Piece[][] getBoardArray() {
         return this.boardArray;
     }
 
+    /**
+     * Gets the number of turns played in the game
+     * @return number of turns
+     */
     public int getTurnsPlayed() {
         return this.turnsPlayed;
     }
 
+    /**
+     * Gets the current state of the game
+     * @return state of the game
+     */
     public Gamestate getGamestate() {
         return this.state;
     }
 
+    /**
+     * Method that changes the state of the game accordingly and prints messages
+     * once the game has been won.
+     */
     public void gameWon() {
         this.state = Gamestate.WON;
         System.out.println(this.toString());
@@ -53,7 +79,6 @@ public class Board {
      * Checks the connections of the pieces. If either color has 4 pieces in a row of the same color, diagonally, 
      * vertically, horizontally then the gamestate is equal to won. Otherwise the connections don't equate to 4 so the game will
      * continue to be in progress.
-     * @return - whether the game is won or not
      */
     public void checkConnections() {
         // see if there are 3 more connections associated with this particular piece
@@ -175,6 +200,10 @@ public class Board {
         // check connections to see if the game is won
     }
 
+    /**
+     * Prints out a representation of the board to the console
+     * @return - String representation of the board.
+     */
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (int i=0; i<ROWS; i++) {
