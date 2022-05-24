@@ -55,6 +55,22 @@ public class Board {
     }
 
     /**
+     * Gets number of rows in the board
+     * @return num rows
+     */
+    public int getRows() {
+        return ROWS;
+    }
+
+    /**
+     * Gets number of cols in the board
+     * @return num cols
+     */
+    public int getCols() {
+        return COLS;
+    }
+
+    /**
      * Method that changes the state of the game accordingly and prints messages
      * once the game has been won.
      */
