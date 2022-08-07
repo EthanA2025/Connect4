@@ -6,9 +6,9 @@ import model.Board;
 import model.Gamestate;
 
 public class Connect4CLI {
-    private final static Board board = new Board(Gamestate.IN_PROGRESS);
+    final Board board = new Board(Gamestate.IN_PROGRESS);
 
-    public static void main(String[] args) {
+    public void start() {
         Scanner s = new Scanner(System.in);
 
         System.out.println("Welcome to connect 4!");
@@ -22,7 +22,7 @@ public class Connect4CLI {
                 case "help":
                     System.out.println("Goal of the game: Each player must connect 4 pieces diagonally, vertically, or horizontally to win.\n"
                         + "Players take alternating turns between RED and YELLOW pieces. RED goes first in the game.\n"
-                        + "Players place pieces between a column 0-5 to choose from which places the piece.\n"
+                        + "Players place pieces between a column 0-6 to choose from which places the piece.\n"
                         + "Commands:\n"
                         + "\thelp - gives a list of all commands\n"
                         + "\tplace #column - given a column place a token, players take alternating turns\n"
@@ -48,5 +48,10 @@ public class Connect4CLI {
         }   
         s.close();
         System.out.println("Goodbye!");
+    }
+
+    public static void main(String[] args) {
+        Connect4CLI cli = new Connect4CLI();
+        cli.start();
     }
 }
