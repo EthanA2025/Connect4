@@ -34,7 +34,7 @@ public class Connect4CLI {
                     board.setGamestate(Gamestate.QUIT);
                     break;
 
-                case "place":
+                case "p":
                     int col = Integer.valueOf(s.next());
                     System.out.println("Placing piece at column: " + col);
                     board.placePiece(col);
@@ -45,14 +45,15 @@ public class Connect4CLI {
                     System.out.println("unkown command");
                     break;
             }
-        }   
-        System.out.println("Continue? (Y/N) ");
-        String cont = s.next().toLowerCase();
-        if (cont.toLowerCase().equals("Y")) {
-            board.resetBoard();
-        } else {
-            s.close();
-            System.out.println("Goodbye!");
+            if (board.getGamestate().equals(Gamestate.WON)) {
+                System.out.println("Press Y for a new game any other key to leave: ");
+                String cont = s.next().toLowerCase();
+                if (cont.toLowerCase().equals("y")) {
+                    board.resetBoard();
+                }
+            }   
         }
+        s.close();
+        System.out.println("Goodbye!");
     }
 }

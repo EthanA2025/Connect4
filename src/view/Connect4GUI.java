@@ -1,5 +1,8 @@
 package view;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -26,6 +29,8 @@ public class Connect4GUI extends Application {
     private Board board;
     private int placeButtonNum;
     private Label statLabel = createStatusLabel();
+    private final GridPane grid = new GridPane();        
+    private HashMap<ArrayList<Integer>, Label> pieces = new HashMap<>();
 
     public Label createStatusLabel() {
         Label status = new Label();
@@ -36,6 +41,31 @@ public class Connect4GUI extends Application {
         status.setFont(new Font("Arial", 24));
 
         return status;
+    }
+
+    public void updatePiece(int row, int col) {
+        ArrayList<Integer> rowCol = new ArrayList<>();
+        rowCol.add(row);
+        rowCol.add(col);
+
+        Label toUpdate = pieces.get(rowCol);
+        if (board.getTurnsPlayed()%2 == 0) {
+            Image circle = new Image("file:src/img/yellow_token.png");
+            ImageView view = new ImageView(circle);
+            view.setPreserveRatio(true);
+            view.setFitWidth(100);
+            view.setFitHeight(100);
+
+            toUpdate.setGraphic(view);
+        } else {
+            Image circle = new Image("file:src/img/red_token.png");
+            ImageView view = new ImageView(circle);  
+            view.setPreserveRatio(true);
+            view.setFitWidth(100);
+            view.setFitHeight(100);
+
+            toUpdate.setGraphic(view);
+        }
     }
 
     public void updateStatus() {
@@ -64,7 +94,8 @@ public class Connect4GUI extends Application {
             @Override
             public void handle(ActionEvent event) {
                 if (!board.getGamestate().equals(Gamestate.WON)) {
-                    board.placePiece(column);
+                    int row = board.placePiece(column);
+                    updatePiece(row, column);
                     updateStatus();
                     board.checkConnections();
                     if (board.getGamestate().equals(Gamestate.WON)) {
@@ -91,19 +122,27 @@ public class Connect4GUI extends Application {
         return label;
     }
 
-    @Override
-    public void start(Stage stage) throws Exception {
-        board = new Board(Gamestate.IN_PROGRESS);
-        GridPane grid = new GridPane();        
-        BorderPane bp = new BorderPane();
-        HBox hbox = new HBox();
-
+    public void createPieces() {
         for (int row=0; row<board.getRows(); row++) {
             for (int col=0; col<board.getCols(); col++) {
                 Label piece = createPieceLabel();
                 grid.add(piece, row, col);
+                ArrayList<Integer> rowCol = new ArrayList<>();
+                rowCol.add(row);
+                rowCol.add(col);
+
+                pieces.put(rowCol, piece);
             }
         }
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        board = new Board(Gamestate.IN_PROGRESS);
+        BorderPane bp = new BorderPane();
+        HBox hbox = new HBox();
+
+        createPieces();
 
         for (int i=1; i<board.getCols(); i++) {
             hbox.getChildren().add(createPlaceButton());

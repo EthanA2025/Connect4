@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Arrays;
+
 import view.Connect4Observer;
 
 /**
@@ -25,8 +27,16 @@ public class Board {
     }
 
     /**
+     * Setter for an observer object
+     * @param observer 
+     */
+    public void register(Connect4Observer observer) {
+        this.observer = observer;
+    }
+
+    /**
      * Sets the state of the game using the Gamestate enumeration
-     * @param state state to change to
+     * @param state
      */
     public void setGamestate(Gamestate state) {
         this.state = state;
@@ -128,7 +138,7 @@ public class Board {
         // check vertical
         for (int col=0; col<=COLS-1; col++) {
             for (int row=0; row<=ROWS-1; row++) {
-                if (row - 1 > 0 && col + 1 < COLS && boardArray[row][col] != null) {
+                if (boardArray[row][col] != null) {
                     Type currentType = boardArray[row][col].getType();
                     try {
                         Type Type2 = boardArray[row+1][col].getType();
@@ -137,6 +147,7 @@ public class Board {
 
                         if (currentType.equals(Type2) && currentType.equals(Type3) && currentType.equals(Type4)) {
                             gameWon();
+                            break;
                         }
                     } catch (Exception e) {
                         // ignore out of bounds exceptions
@@ -191,14 +202,14 @@ public class Board {
      * board and the pieces will stack onto each other.
      * @param column - column the piece will be added too
      */
-    public void placePiece(int column) {
+    public int placePiece(int column) {
         // first check if the position is valid that the piece is being added too, then add it to the 2D array and set
         boolean valid = false;
         int row = 0;
 
         if (column >= COLS) {
             System.out.println("Invalid column!");
-            return;
+            return -1;
         }
 
         for (int i=1; i<=ROWS; i++) {
@@ -220,6 +231,7 @@ public class Board {
         } // if all of them are not null then the column is full
         turnPlayed();
         // check connections to see if the game is won
+        return row;
     }
 
     /**
@@ -245,5 +257,7 @@ public class Board {
         this.state = Gamestate.IN_PROGRESS;
         this.boardArray = new Piece[ROWS][COLS];
         this.turnsPlayed = 0;
+
+        // observer.resetBoard();
     }
 }
