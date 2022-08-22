@@ -46,7 +46,13 @@ public class Connect4CLI {
                     break;
             }
         }   
-        s.close();
-        System.out.println("Goodbye!");
+        System.out.println("Continue? (Y/N) ");
+        String cont = s.next().toLowerCase();
+        if (cont.toLowerCase().equals("Y")) {
+            board.resetBoard();
+        } else {
+            s.close();
+            System.out.println("Goodbye!");
+        }
     }
 }

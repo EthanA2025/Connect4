@@ -1,6 +1,8 @@
 package view;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -22,6 +24,8 @@ import model.Gamestate;
 
 public class Connect4GUI extends Application {
     private Board board;
+    private int placeButtonNum;
+    private Label statLabel = createStatusLabel();
 
     public Label createStatusLabel() {
         Label status = new Label();
@@ -34,10 +38,41 @@ public class Connect4GUI extends Application {
         return status;
     }
 
+    public void updateStatus() {
+        if (board.getTurnsPlayed()%2 == 1) {
+            statLabel.setBackground(new Background(new BackgroundFill(Color.YELLOW, CornerRadii.EMPTY, Insets.EMPTY)));
+            statLabel.setText("YELLOWS's turn!");
+        } else {
+            statLabel.setText("RED's turn!");
+            statLabel.setBackground(new Background(new BackgroundFill(Color.SALMON, CornerRadii.EMPTY, Insets.EMPTY)));
+        }
+    }
+
+    public void GUIwin() {
+        statLabel.setBackground(new Background(new BackgroundFill(Color.AQUAMARINE, CornerRadii.EMPTY, Insets.EMPTY)));
+        statLabel.setText(board.gameWon());
+    }
+
     public Button createPlaceButton() {
         Button button = new Button();
         button.setPrefSize(100, 100);
         button.setText("");
+        int column = placeButtonNum;
+        placeButtonNum++;
+
+        button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (!board.getGamestate().equals(Gamestate.WON)) {
+                    board.placePiece(column);
+                    updateStatus();
+                    board.checkConnections();
+                    if (board.getGamestate().equals(Gamestate.WON)) {
+                        GUIwin();
+                    }
+                }
+            }
+        });
 
         return button;
     }
@@ -62,7 +97,6 @@ public class Connect4GUI extends Application {
         GridPane grid = new GridPane();        
         BorderPane bp = new BorderPane();
         HBox hbox = new HBox();
-        Label status = createStatusLabel();
 
         for (int row=0; row<board.getRows(); row++) {
             for (int col=0; col<board.getCols(); col++) {
@@ -77,7 +111,7 @@ public class Connect4GUI extends Application {
 
         bp.setCenter(grid);
         bp.setTop(hbox);
-        bp.setBottom(status);
+        bp.setBottom(this.statLabel);
 
         Scene scene = new Scene(bp);
         stage.setScene(scene);     

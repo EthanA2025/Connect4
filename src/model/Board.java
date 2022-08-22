@@ -1,5 +1,7 @@
 package model;
 
+import view.Connect4Observer;
+
 /**
  * A class to represent a connect 4 board (6x7).
  * Each board has a boardArray associated with it that
@@ -11,9 +13,10 @@ package model;
 public class Board {
     private static final int ROWS = 6;
     private static final int COLS = 7;
-    private final Piece[][] boardArray;
+    private Piece[][] boardArray;
     private int turnsPlayed;
     private Gamestate state;
+    private Connect4Observer observer;
     
     public Board(Gamestate state) {
         this.boardArray = new Piece[ROWS][COLS];
@@ -74,13 +77,16 @@ public class Board {
      * Method that changes the state of the game accordingly and prints messages
      * once the game has been won.
      */
-    public void gameWon() {
+    public String gameWon() {
         this.state = Gamestate.WON;
         System.out.println(this.toString());
         if ((turnsPlayed-1)%2 == 0) {
             System.out.println("Red wins!"); // since turns are incremented before this, subtract 1 from turnsPlayed to get correct winner
+            return "RED wins!";
+
         } else {
             System.out.println("Yellow wins!");
+            return "YELLOW wins!";
         }
     }
 
@@ -233,5 +239,11 @@ public class Board {
             sb.append("\n");
         }
         return sb.toString();
+    }
+
+    public void resetBoard() {
+        this.state = Gamestate.IN_PROGRESS;
+        this.boardArray = new Piece[ROWS][COLS];
+        this.turnsPlayed = 0;
     }
 }
