@@ -25,28 +25,44 @@ import javafx.stage.Stage;
 import model.Board;
 import model.Gamestate;
 
+/**
+ * GUI for the Connect 4 game
+ * @author Ethan Abbate
+ */
+
 public class Connect4GUI extends Application {
     private Board board;
-    private int placeButtonNum;
+    private int placeButtonNum = 0;
     private Label statLabel = createStatusLabel();
     private final GridPane grid = new GridPane();        
     private HashMap<ArrayList<Integer>, Label> pieces = new HashMap<>();
 
+    /**
+     * Method to create the status label of the game
+     * this label indicates to the users the current
+     * status of the game (in progress, completed)
+     * @return status label
+     */
     public Label createStatusLabel() {
         Label status = new Label();
         status.setText("RED's turn!");
         status.setBackground(new Background(new BackgroundFill(Color.SALMON, CornerRadii.EMPTY, Insets.EMPTY)));
-        status.setPrefWidth(600);
+        status.setPrefWidth(700);
         status.setAlignment(Pos.CENTER);
         status.setFont(new Font("Arial", 24));
 
         return status;
     }
-
+    
+    /**
+     * A method for updating the graphic of the piece in the connect 4 board
+     * @param row the row of the piece being updated
+     * @param col the column of the piece being updated
+     */
     public void updatePiece(int row, int col) {
         ArrayList<Integer> rowCol = new ArrayList<>();
-        rowCol.add(row);
-        rowCol.add(col);
+        rowCol.add(5 - row); // subtract 5 from the row so that the pieces go in botton -> top or else the pieces will appear to be placed at the top
+        rowCol.add(col);     // of the board.
 
         Label toUpdate = pieces.get(rowCol);
         if (board.getTurnsPlayed()%2 == 0) {
@@ -55,7 +71,6 @@ public class Connect4GUI extends Application {
             view.setPreserveRatio(true);
             view.setFitWidth(100);
             view.setFitHeight(100);
-
             toUpdate.setGraphic(view);
         } else {
             Image circle = new Image("file:src/img/red_token.png");
@@ -68,6 +83,10 @@ public class Connect4GUI extends Application {
         }
     }
 
+    /**
+     * Method to update the status of the label
+     * and shows what turn it is (RED or YELLOW)
+     */
     public void updateStatus() {
         if (board.getTurnsPlayed()%2 == 1) {
             statLabel.setBackground(new Background(new BackgroundFill(Color.YELLOW, CornerRadii.EMPTY, Insets.EMPTY)));
@@ -78,11 +97,19 @@ public class Connect4GUI extends Application {
         }
     }
 
+    /**
+     * Method that is called when the game is won
+     * displays which color won (RED or YELLOw)
+     */
     public void GUIwin() {
         statLabel.setBackground(new Background(new BackgroundFill(Color.AQUAMARINE, CornerRadii.EMPTY, Insets.EMPTY)));
         statLabel.setText(board.gameWon());
-    }
+    }   
 
+    /**
+     * Creates buttons for the user to place down a piece
+     * @return
+     */
     public Button createPlaceButton() {
         Button button = new Button();
         button.setPrefSize(100, 100);
@@ -108,6 +135,10 @@ public class Connect4GUI extends Application {
         return button;
     }
 
+    /**
+     * Factory method for creating the labels for the pieces
+     * @return
+     */
     public Label createPieceLabel() {
         Label label = new Label(); 
         label.setPrefSize(100, 100);
@@ -122,12 +153,17 @@ public class Connect4GUI extends Application {
         return label;
     }
 
+    /**
+     * Creates the grid of pieces that will be displayed,
+     * this represents the Connect 4 board.
+     */
     public void createPieces() {
         for (int row=0; row<board.getRows(); row++) {
             for (int col=0; col<board.getCols(); col++) {
                 Label piece = createPieceLabel();
-                grid.add(piece, row, col);
-                ArrayList<Integer> rowCol = new ArrayList<>();
+                grid.add(piece, col, row);
+
+                ArrayList<Integer> rowCol = new ArrayList<>(); // store row and column in dictionary
                 rowCol.add(row);
                 rowCol.add(col);
 
@@ -144,7 +180,7 @@ public class Connect4GUI extends Application {
 
         createPieces();
 
-        for (int i=1; i<board.getCols(); i++) {
+        for (int i=0; i<board.getCols(); i++) {
             hbox.getChildren().add(createPlaceButton());
         }
 
