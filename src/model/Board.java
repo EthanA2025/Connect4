@@ -1,9 +1,5 @@
 package model;
 
-import java.util.Arrays;
-
-import view.Connect4Observer;
-
 /**
  * A class to represent a connect 4 board (6x7).
  * Each board has a boardArray associated with it that
@@ -18,20 +14,11 @@ public class Board {
     private Piece[][] boardArray;
     private int turnsPlayed;
     private Gamestate state;
-    private Connect4Observer observer;
     
     public Board(Gamestate state) {
         this.boardArray = new Piece[ROWS][COLS];
         this.state = state;
         this.turnsPlayed = 0;
-    }
-
-    /**
-     * Setter for an observer object
-     * @param observer 
-     */
-    public void register(Connect4Observer observer) {
-        this.observer = observer;
     }
 
     /**
@@ -257,7 +244,5 @@ public class Board {
         this.state = Gamestate.IN_PROGRESS;
         this.boardArray = new Piece[ROWS][COLS];
         this.turnsPlayed = 0;
-
-        // observer.resetBoard();
     }
 }
